@@ -1,11 +1,8 @@
-Latex & Julia docker container
+Julia docker container
 =====
 
-[![Docker Build Status](https://img.shields.io/docker/build/jgoldfar/latex-julia-docker.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/jgoldfar/latex-julia-docker.svg)](https://hub.docker.com/r/jgoldfar/latex-julia-docker/)
+[![Docker Build Status](https://img.shields.io/docker/build/jgoldfar/julia-docker.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/jgoldfar/julia-docker.svg)](https://hub.docker.com/r/jgoldfar/julia-docker/)
 
-This container helps with compilation of latex sources without the need to install all latex packages on your system.
-
-This repository is forked from blang's repository in order to add other packages needed for a CI setup.
 
 Setup
 -----
@@ -16,38 +13,23 @@ sudo usermod -aG docker YOURUSERNAME
 
 build:
 ```bash
-docker build -t jgoldfar/latex-julia-docker .
-
+docker build -t jgoldfar/julia-docker .
 ```
 
 Usage:
 -----
 
 ```bash
-docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$(pwd)":/data jgoldfar/latex-julia-docker
-
-# Or better in one go (does not start container twice)
-docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$(pwd)":/data jgoldfar/latex-docker /bin/sh -c "pdflatex example.tex && pdflatex example.tex"
-
-# View
-./example.pdf
+docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$(pwd)":/data jgoldfar/julia-docker
 ```
 `WORKDIRs` match, mounted to `/data` inside container.
 
-Why should I use this container?
-
 -----
-
-- Easy setup
-- `texlive-full` covers most of the available packages
-- `chktex` and `pgf` packages are explicitly installed to ensure they are always available.
 
 ## Container Descriptions
 
-* plus-julia-release includes everything in default, plus Julia v0.6 and v0.7
+* `v07`: Latest Julia v0.7 release
 
-* plus-julia-dev includes everything in default, plus Julia 0.7 and Julia 1.0 (useful for porting packages)
+* `v10`: Latest Julia v1.0.x release
 
-* plus-julia-dev includes everything in default, plus a version of Julia built from source
-
-* plus-julia-and-maxima includes the released version of Julia (v0.7) as well as everything included in [maxima-docker](https://github.com/jgoldfar/maxima-docker), that is, Maxima built against SBCL.
+* `v11`: Latest Julia v1.1.x release
