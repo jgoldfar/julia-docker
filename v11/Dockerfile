@@ -9,7 +9,7 @@ RUN set -eux; \
   if ! command -v gpg > /dev/null; then \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-      gnupg \
+      gnupg2 \
       dirmngr \
     ; \
     rm -rf /var/lib/apt/lists/*; \
@@ -38,8 +38,11 @@ RUN set -eux; \
   echo "${sha256} *julia.tar.gz" | sha256sum -c -; \
   \
   export GNUPGHOME="$(mktemp -d)"; \
-  gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JULIA_GPG"; \
-  gpg --batch --verify julia.tar.gz.asc julia.tar.gz; \
+  ( gpg2 --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JULIA_GPG" \
+  || gpg2 --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$JULIA_GPG" \
+  || gpg2 --batch --keyserver hkp://pgp.mit.edu:80 --recv-keys "$JULIA_GPG" \
+  || gpg2 --batch --keyserver keyserver.pgp.com --recv-keys "$JULIA_GPG" ) ; \
+  gpg2 --batch --verify julia.tar.gz.asc julia.tar.gz; \
   command -v gpgconf > /dev/null && gpgconf --kill all; \
   rm -rf "$GNUPGHOME" julia.tar.gz.asc; \
   \
